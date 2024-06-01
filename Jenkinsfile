@@ -8,6 +8,14 @@ pipeline {
     }
 
     stages {
+        stage('Prepare Environment') {
+            steps {
+                script {
+                    // Clean up the existing directory if it exists
+                    sh 'rm -rf jenkinsTest'
+                }
+            }
+        }
         stage('Git Clone') {
             steps {
                 script {
