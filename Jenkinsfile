@@ -21,9 +21,9 @@ pipeline {
             steps {
                 script {
                     // Set execute permissions for gradlew
-                    sh 'chmod +x ./jenkinsTest/gradlew'
+                    sh 'gradlew'
                     // Build
-                    sh './jenkinsTest/gradlew clean build'
+                    sh 'gradlew build'
                 }
             }
         }
