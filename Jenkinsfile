@@ -16,6 +16,7 @@ pipeline {
                 }
             }
         }
+
         stage('Git Clone') {
             steps {
                 script {
@@ -28,10 +29,22 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Set execute permissions for gradlew
-                    sh 'gradlew'
-                    // Build
-                    sh 'gradlew build'
+                    // Navigate to the cloned directory
+                    dir('jenkinsTest') {
+                        // Set execute permissions for gradlew
+                        sh 'chmod +x gradlew'
+                        // Build
+                        sh './gradlew clean build'
+                    }
+                }
+            }
+        }
+
+        stage('Verify Docker Installation') {
+            steps {
+                script {
+                    // Ensure Docker is installed and accessible
+                    sh 'docker --version'
                 }
             }
         }
@@ -59,8 +72,12 @@ pipeline {
 
     post {
         always {
-            // Docker image removal
-            sh "docker rmi ${DOCKER_IMAGE_TAG}"
+            script {
+                // Ensure Docker is installed and accessible
+                sh 'docker --version'
+                // Docker image removal
+                sh "docker rmi ${DOCKER_IMAGE_TAG}"
+            }
         }
         success {
             // Success message
