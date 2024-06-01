@@ -40,11 +40,20 @@ pipeline {
             }
         }
 
+        stage('Verify Docker Installation') {
+            steps {
+                script {
+                    // Ensure Docker is installed and accessible
+                    sh 'docker --version'
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
                     // Docker image build
-                    sh "docker build -t Dockerfile ."
+                    sh "docker build -t ${DOCKER_IMAGE_TAG} ."
                 }
             }
         }
