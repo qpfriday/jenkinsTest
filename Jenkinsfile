@@ -40,15 +40,6 @@ pipeline {
             }
         }
 
-        stage('Verify Docker Installation') {
-            steps {
-                script {
-                    // Ensure Docker is installed and accessible
-                    sh 'docker --version'
-                }
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 script {
