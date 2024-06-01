@@ -69,23 +69,4 @@ pipeline {
             }
         }
     }
-
-    post {
-        always {
-            script {
-                // Ensure Docker is installed and accessible
-                sh 'docker --version'
-                // Docker image removal
-                sh "docker rmi ${DOCKER_IMAGE_TAG}"
-            }
-        }
-        success {
-            // Success message
-            echo 'Docker image pushed to Docker Hub successfully!'
-        }
-        failure {
-            // Failure message
-            echo 'Build or push failed.'
-        }
-    }
 }
