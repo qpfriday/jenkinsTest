@@ -11,7 +11,7 @@ pipeline {
         stage('Git Clone') {
             steps {
                 script {
-                    // Git 클론
+                    // Git clone
                     sh 'git clone -b master https://github.com/qpfriday/jenkinsTest.git'
                 }
             }
@@ -20,8 +20,10 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // 빌드
-                    sh './gradlew clean build'
+                    // Set execute permissions for gradlew
+                    sh 'chmod +x ./jenkinsTest/gradlew'
+                    // Build
+                    sh './jenkinsTest/gradlew clean build'
                 }
             }
         }
@@ -29,7 +31,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Docker 이미지 빌드
+                    // Docker image build
                     sh "docker build -t ${DOCKER_IMAGE_TAG} ."
                 }
             }
@@ -39,7 +41,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS) {
-                        // Docker 이미지 푸시
+                        // Docker image push
                         sh "docker push ${DOCKER_IMAGE_TAG}"
                     }
                 }
@@ -49,15 +51,15 @@ pipeline {
 
     post {
         always {
-            // Docker 이미지 제거
+            // Docker image removal
             sh "docker rmi ${DOCKER_IMAGE_TAG}"
         }
         success {
-            // 성공 메시지 출력
+            // Success message
             echo 'Docker image pushed to Docker Hub successfully!'
         }
         failure {
-            // 실패 메시지 출력
+            // Failure message
             echo 'Build or push failed.'
         }
     }
