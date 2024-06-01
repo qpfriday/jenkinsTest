@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     // Git 클론
-                    sh 'git clone -b master https://kdt-gitlab.elice.io/cloud_track/class_02/web_project3/team04/team4-back.git'
+                    sh 'git clone -b master https://github.com/qpfriday/jenkinsTest.git'
                 }
             }
         }
