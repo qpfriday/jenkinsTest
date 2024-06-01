@@ -57,15 +57,11 @@ pipeline {
                 }
             }
         }
-        stage('Login'){
-            steps{
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
-            }
-        }
+
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS) {
+                    docker.withRegistry('https://index.docker.io/v1/') {
                         // Docker image push
                         sh "docker push ${DOCKER_IMAGE_TAG}"
                     }
